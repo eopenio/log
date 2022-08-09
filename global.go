@@ -1,22 +1,12 @@
-// Copyright 2020 EOI, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package log
 
 import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
+
+// ZapEncodingName is the encoder name registered in zap
+var ZapEncodingName = "eopenio-log"
 
 // Debug logs a message at DebugLevel. The message includes any fields passed
 // at the log site, as well as any fields accumulated on the logger.
@@ -67,10 +57,10 @@ func With(fields ...zap.Field) *zap.Logger {
 
 // SetLevel alters the logging level.
 func SetLevel(l zapcore.Level) {
-	_globalP.Level.SetLevel(l)
+	globalProperties.Load().(*ZapProperties).Level.SetLevel(l)
 }
 
 // GetLevel gets the logging level.
 func GetLevel() zapcore.Level {
-	return _globalP.Level.Level()
+	return globalProperties.Load().(*ZapProperties).Level.Level()
 }
